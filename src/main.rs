@@ -12,7 +12,7 @@ fn main() {
 
     let integer_input: i32 = read_user_input();
 
-    println!("{}", nb_push(modif, integer_input)); //borrowing issue
+    println!("{}", nb_push(modif, integer_input));
 
 }
 
@@ -44,9 +44,7 @@ fn nb_push(mut text_input : String, nb_input : i32) -> String {
 fn read_user_input() -> i32 {
     let mut user_input = String::new();
 
-    loop {
-        
-        
+    loop {       
         io::stdin()
             .read_line(&mut user_input)
             .expect("error");
@@ -55,8 +53,6 @@ fn read_user_input() -> i32 {
             Ok(int) => int,
             Err(_) => continue,
         };
-        break;
-    }
-    user_input
-    
+        break user_input; //return loop result ouside the loop 
+    }     
 }
