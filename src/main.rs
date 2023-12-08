@@ -12,17 +12,20 @@ fn main() {
     println!("saisie i32: ");
 
 
-    let user_input : i32 = loop {
-        match io::stdin()
+    loop {
+        
+        
+        io::stdin()
             .read_line(&mut user_input)
-            .expect("error")
-            .trim()
-            .parse() {
+            .expect("error");
+
+        let user_input : i32 = match user_input.trim().parse() {
             Ok(int) => int,
             Err(_) => continue,
         };
-    };
-
+        
+        break;
+    }
 
     println!("{}", nb_push(modif, user_input));
 
