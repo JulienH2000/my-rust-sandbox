@@ -4,15 +4,19 @@ fn main() {
 
     let retour = text_return();
     let modif = text_modif(retour.clone());
+    let mut numero = String::from(&modif);
 
     println!("{}", retour);
     println!("{}", modif);
 
     println!("saisie i32: ");
 
-    let integer_input: i32 = read_user_input();
+    while numero.len() < 13 {
+        let integer_input: i32 = read_user_input();
+        numero = nb_push(numero, integer_input);
+        println!("{}", numero);
+    }
 
-    println!("{}", nb_push(modif, integer_input));
 
 }
 
