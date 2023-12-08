@@ -4,30 +4,15 @@ fn main() {
 
     let retour = text_return();
     let modif = text_modif(retour.clone());
-    let mut user_input = String::new();
 
     println!("{}", retour);
     println!("{}", modif);
 
     println!("saisie i32: ");
 
+    let integer_input: i32 = read_user_input();
 
-    loop {
-        
-        
-        io::stdin()
-            .read_line(&mut user_input)
-            .expect("error");
-
-        let user_input : i32 = match user_input.trim().parse() {
-            Ok(int) => int,
-            Err(_) => continue,
-        };
-        
-        break;
-    }
-
-    println!("{}", nb_push(modif, user_input));
+    println!("{}", nb_push(modif, integer_input)); //borrowing issue
 
 }
 
@@ -53,4 +38,25 @@ fn nb_push(mut text_input : String, nb_input : i32) -> String {
     text_input.push_str(&tmp);
 
     text_input
+}
+
+
+fn read_user_input() -> i32 {
+    let mut user_input = String::new();
+
+    loop {
+        
+        
+        io::stdin()
+            .read_line(&mut user_input)
+            .expect("error");
+
+        let user_input : i32 = match user_input.trim().parse() {
+            Ok(int) => int,
+            Err(_) => continue,
+        };
+        break;
+    }
+    user_input
+    
 }
