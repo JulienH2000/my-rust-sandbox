@@ -1,4 +1,11 @@
-use std::io;
+use std::{io, str::Bytes};
+
+struct Timecode {
+    h : i32,
+    m : i32,
+    s : i32,
+    f : i32,
+}
 
 fn main() {
 
@@ -17,7 +24,94 @@ fn main() {
         println!("{}", numero);
     }
 
+    let baba = slice_at_underscore(&numero);
+    println!("{}", baba);
 
+    let ref_tc = Timecode {
+        h: 2,
+        m: 37,
+        s: 16,
+        f: 8,
+    };
+
+    
+
+
+}
+
+// hh:mm:ss:ff
+
+fn slice_tc (source: &String) -> [i32; 3]{
+    let octets = source.as_bytes();
+    let mut point: [i32; 3] = [0,0,0];
+
+    for (i, &element) in octets.iter().enumerate() {
+        let mut index = 0;
+        if element == b':' {
+           point[index]= i.try_into().unwrap();
+           index += 1;
+        }
+    }
+    
+    return point;
+
+}
+
+fn user_input_breakdown() -> (i32, i32, i32, i32) {
+
+    let user_tc = loop {      
+        let mut user_input = String::new();
+
+        io::stdin()
+            .read_line(&mut user_input)
+            .expect("error");
+
+        let split = slice_tc(&user_input);
+
+        let h: i32 = match user_input[0..split[0] as usize].trim().parse() {
+            Ok(int) => int,
+            Err(_) => continue,
+        }; 
+        let m: i32 = match user_input[split[0] as usize..split[1] as usize].trim().parse() {
+            Ok(int) => int,
+            Err(_) => continue,
+        };
+        let s: i32 = match user_input[split[1] as usize..split[2] as usize].trim().parse() {
+            Ok(int) => int,
+            Err(_) => continue,
+        };
+        let f: i32 = match user_input[split[2] as usize..].trim().parse() {
+            Ok(int) => int,
+            Err(_) => continue,
+        };  
+
+        if h <= 24 && m <= 60 && s <= 60 && f <= 24 {
+            break (h, m, s, f);
+        } else {
+            println!("invalid tc");
+        }
+
+        
+    };
+
+    user_tc
+}
+
+fn create_tc_value (h: i32, m: i32, s:i32, f:i32) -> Timecode {
+    Timecode { h: h, m: m, s: s, f: f}
+}
+
+fn slice_at_underscore (source : &String) -> &str {
+    let octets = source.as_bytes();
+
+    for (i, &element) in octets.iter().enumerate() {
+        if element == b'_' {
+           return &source[i..source.len()];
+        }
+    
+    }
+
+    &source[..]
 }
 
 fn text_return() -> String {
@@ -44,7 +138,6 @@ fn nb_push(mut text_input : String, nb_input : i32) -> String {
     text_input
 }
 
-
 fn read_user_input() -> i32 {
     let mut user_input = String::new();
 
@@ -58,5 +151,5 @@ fn read_user_input() -> i32 {
             Err(_) => continue,
         };
         break user_input; //return loop result ouside the loop 
-    }     
+    }
 }
