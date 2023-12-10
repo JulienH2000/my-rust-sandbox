@@ -1,4 +1,4 @@
-use std::{io, str::Bytes};
+use std::io;
 
 struct Timecode {
     h : i32,
@@ -50,8 +50,10 @@ fn slice_tc (source: &String) -> [i32; 3]{
     let octets = source.as_bytes();
     let mut point: [i32; 3] = [0,0,0];
 
+    #[allow(unused_assignments)]
+    let mut index = 0;
     for (i, &element) in octets.iter().enumerate() {
-        let mut index = 0;
+        
         if element == b':' {
            point[index]= i.try_into().unwrap();
            index += 1;
@@ -73,6 +75,12 @@ fn user_input_breakdown() -> (i32, i32, i32, i32) {
 
         let split = slice_tc(&user_input);
 
+        println!("{}{}{}", split[0],split[1],split[2]);
+        println!("{}", &user_input[0..split[0] as usize]);
+        println!("{}", &user_input[(split[0]+1) as usize..split[1] as usize]);
+        println!("{}", &user_input[(split[1]+1) as usize..split[2] as usize]);
+        println!("{}", &user_input[(split[2]+1) as usize..]);
+
         let h: i32 = match user_input[0..split[0] as usize].trim().parse() {
             Ok(int) => int,
             Err(_) => continue,
@@ -89,6 +97,7 @@ fn user_input_breakdown() -> (i32, i32, i32, i32) {
             Ok(int) => int,
             Err(_) => continue,
         };  
+        println!("prout");
 
         if h <= 24 && m <= 60 && s <= 60 && f <= 24 {
             break (h, m, s, f);
