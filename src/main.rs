@@ -8,7 +8,7 @@ struct Timecode {
 }
 
 fn main() {
-
+    /*
     let retour = text_return();
     let modif = text_modif(retour.clone());
     let mut numero = String::from(&modif);
@@ -26,6 +26,7 @@ fn main() {
 
     let baba = slice_at_underscore(&numero);
     println!("{}", baba);
+    */
 
     let ref_tc = Timecode {
         h: 2,
@@ -34,12 +35,16 @@ fn main() {
         f: 8,
     };
 
-    
+    println!("enter timecode value (hh:mm:ss:ff format)");
+    let user_tc_tuple=user_input_breakdown();
+    let user_tc = create_tc_value(user_tc_tuple);
+    println!("{}:{}:{}:{}", user_tc.h, user_tc.m, user_tc.s, user_tc.f);
 
 
 }
 
 // hh:mm:ss:ff
+
 
 fn slice_tc (source: &String) -> [i32; 3]{
     let octets = source.as_bytes();
@@ -97,8 +102,8 @@ fn user_input_breakdown() -> (i32, i32, i32, i32) {
     user_tc
 }
 
-fn create_tc_value (h: i32, m: i32, s:i32, f:i32) -> Timecode {
-    Timecode { h: h, m: m, s: s, f: f}
+fn create_tc_value (tc:(i32, i32, i32, i32)) -> Timecode {
+    Timecode { h: tc.0, m: tc.1, s: tc.2, f: tc.3}
 }
 
 fn slice_at_underscore (source : &String) -> &str {
