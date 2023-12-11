@@ -75,29 +75,27 @@ fn user_input_breakdown() -> (i32, i32, i32, i32) {
 
         let split = slice_tc(&user_input);
 
-        println!("{}{}{}", split[0],split[1],split[2]);
-        println!("{}", &user_input[0..split[0] as usize]);
-        println!("{}", &user_input[(split[0]+1) as usize..split[1] as usize]);
-        println!("{}", &user_input[(split[1]+1) as usize..split[2] as usize]);
-        println!("{}", &user_input[(split[2]+1) as usize..]);
+        if split[1] == split[2] {
+            println!("invalid tc");
+            continue;
+        };
 
-        let h: i32 = match user_input[0..split[0] as usize].trim().parse() {
+        let h: i32 = match user_input[0..split[0] as usize].parse() {
             Ok(int) => int,
             Err(_) => continue,
         }; 
-        let m: i32 = match user_input[split[0] as usize..split[1] as usize].trim().parse() {
+        let m: i32 = match user_input[(split[0]+1) as usize..split[1] as usize].parse() {
             Ok(int) => int,
             Err(_) => continue,
         };
-        let s: i32 = match user_input[split[1] as usize..split[2] as usize].trim().parse() {
+        let s: i32 = match user_input[(split[1]+1) as usize..split[2] as usize].parse() {
             Ok(int) => int,
             Err(_) => continue,
         };
-        let f: i32 = match user_input[split[2] as usize..].trim().parse() {
+        let f: i32 = match user_input.trim()[(split[2]+1) as usize..].parse() {
             Ok(int) => int,
             Err(_) => continue,
         };  
-        println!("prout");
 
         if h <= 24 && m <= 60 && s <= 60 && f <= 24 {
             break (h, m, s, f);
